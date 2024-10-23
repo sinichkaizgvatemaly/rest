@@ -41,7 +41,7 @@ body {
     background-image: url(../img/back.png);
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat:no-repeat;
     min-height: 100vh;
     width: 100%;
 }
@@ -51,7 +51,6 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    height: 100vh;
     z-index: 10;
     /* Шапка имеет самый высокий приоритет */
 }
@@ -86,7 +85,6 @@ body {
 
 .menu.scrolled {
     background-color: #333333;
-    /* Фон при прокрутке */
 }
 
 @media (max-width: 1199.98px) {
@@ -96,9 +94,10 @@ body {
         left: 30px;
         transform: translateY(-50%);
         z-index: 8;
-        /* Переключатель языка под меню */
+        /
     }
 }
+
 
 .language-switcher label {
     margin-right: 5px;
@@ -148,9 +147,6 @@ body {
         /* Убедитесь, что переключатель выше других элементов */
     }
 }
-
-
-
 
 .menu-list {
     font-weight: 600;
@@ -358,12 +354,8 @@ p {
     margin-top: 100px;
 }
 
-@media (max-width: 1199.98px) {
-    .about {
-        max-width: 800px;
-        width: 100%;
-        /* Это гарантирует, что элемент будет адаптивно занимать всю ширину экрана, но не больше 800px */
-    }
+.memu-th {
+    background-color: transparent;
 }
 
 
@@ -449,7 +441,11 @@ p {
     justify-content: center;
     align-items: center;
     z-index: 10;
-}
+    margin-top: 100px; 
+    z-index: 8;
+    
+    }
+    
 
 @media (max-width: 1199.98px) {
     .our-menu {
@@ -726,7 +722,6 @@ footer {
 
 /* Для мобильных устройств можно задать меньшие отступы */
 @media (max-width: 768px) {
-
     .about,
     .menu-file,
     .our-menu,
