@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const targetId = this.getAttribute('href').substring(1);
             if (targetId) { // Проверка на существование элемента
-                smoothScroll(targetId, 1000); // Вызываем функцию с целью прокрутки за 1000 мс
+                smoothScroll(targetId, 100); // Вызываем функцию с целью прокрутки за 1000 мс
             }
         });
     });
