@@ -52,6 +52,14 @@ document.addEventListener('DOMContentLoaded', function() {
             nav.classList.remove('scrolled');
         }
     });
+    const menuItems = document.querySelectorAll('.menu-link');
+
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        menuList.classList.remove('active');
+    });
+});
+    
 
     // Функция для быстрой прокрутки
     function smoothScroll(targetId, duration) {
