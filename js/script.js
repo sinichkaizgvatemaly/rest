@@ -1,32 +1,66 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var contactModal = document.getElementById('contact-modal');
-    var hoursModal = document.getElementById('hours-modal');
-    var contactsLink = document.getElementById('contacts-link');
-    var workingHoursLink = document.getElementById('working-hours-link');
-    var closeButtons = document.getElementsByClassName('close-button');
+    // Объект переводов для разных языков
+    const translations = {
+        en: {
+            aboutTitle: "Thai Restaurant in Vilnius",
+            aboutDescription: "Where you can enjoy various dishes made with traditional recipes and ingredients. Our restaurant offers authentic Thai flavors such as Tom Yum, Pad Thai, curry, spring rolls, and more.",
+            contactInfo: "Contact Information",
+            workingHours: "Working Hours",
+            workingHoursContent: [
+                "Monday: Closed",
+                "Tuesday: 11:00 AM - 10:00 PM",
+                "Wednesday: 11:00 AM - 10:00 PM",
+                "Thursday: 11:00 AM - 10:00 PM",
+                "Friday: 11:00 AM - 11:00 PM",
+                "Saturday: 12:00 PM - 11:00 PM",
+                "Sunday: 12:00 PM - 10:00 PM"
+            ]
+        },
+        ru: {
+            aboutTitle: "Тайский ресторан в Вильнюсе",
+            aboutDescription: "Где вы можете наслаждаться различными блюдами, приготовленными по традиционным рецептам и ингредиентам. Наш ресторан предлагает аутентичные тайские вкусы, такие как Том Ям, Пад Тай, карри, спринг-роллы и многое другое.",
+            contactInfo: "Контактная информация",
+            workingHours: "Часы работы",
+            workingHoursContent: [
+                "Понедельник: Закрыто",
+                "Вторник: 11:00 - 22:00",
+                "Среда: 11:00 - 22:00",
+                "Четверг: 11:00 - 22:00",
+                "Пятница: 11:00 - 23:00",
+                "Суббота: 12:00 - 23:00",
+                "Воскресенье: 12:00 - 22:00"
+            ]
+        },
+    };
 
-    // Открытие модального окна при клике на "Contacts"
-    contactsLink.onclick = function(event) {
+    // Элементы модальных окон
+    const contactModal = document.getElementById('contact-modal');
+    const hoursModal = document.getElementById('hours-modal');
+    const contactsLink = document.getElementById('contacts-link');
+    const workingHoursLink = document.getElementById('working-hours-link');
+    const closeButtons = document.getElementsByClassName('close-button');
+
+    // Открытие модального окна при клике на "Contacts" и "Working hours"
+    contactsLink.onclick = (event) => {
         event.preventDefault();
         contactModal.style.display = 'block';
     };
 
-    // Открытие модального окна при клике на "Working hours"
-    workingHoursLink.onclick = function(event) {
+    workingHoursLink.onclick = (event) => {
         event.preventDefault();
         hoursModal.style.display = 'block';
     };
 
-    // Закрытие модального окна
-    for (let button of closeButtons) {
-        button.onclick = function() {
+    // Закрытие модальных окон
+    Array.from(closeButtons).forEach(button => {
+        button.onclick = () => {
             contactModal.style.display = 'none';
             hoursModal.style.display = 'none';
         };
-    }
+    });
 
-    // Закрытие модального окна при клике вне его
-    window.onclick = function(event) {
+    // Закрытие модальных окон при клике вне их
+    window.onclick = (event) => {
         if (event.target === contactModal) {
             contactModal.style.display = 'none';
         }
@@ -35,141 +69,121 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Обработчик для бургер-меню
     const burger = document.getElementById('burger');
     const menuList = document.getElementById('menu-list');
-
-    // Обработчик клика по бургер-меню
-    burger.onclick = function() {
-        menuList.classList.toggle('active'); // Переключить класс "active"
+    burger.onclick = () => {
+        menuList.classList.toggle('active');
     };
 
-    // Добавляем обработчик события прокрутки
-    window.addEventListener('scroll', function() {
-        var nav = document.querySelector('.menu');
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
+    // Прокрутка навигационного меню
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.menu');
+        nav.classList.toggle('scrolled', window.scrollY > 50);
     });
-    const menuItems = document.querySelectorAll('.menu-link');
 
-menuItems.forEach(item => {
-    item.addEventListener('click', () => {
-        menuList.classList.remove('active');
+    // Закрытие меню при клике на его элементы
+    document.querySelectorAll('.menu-link').forEach(item => {
+        item.addEventListener('click', () => {
+            menuList.classList.remove('active');
+        });
     });
-});
-    
 
-    // Функция для быстрой прокрутки
-    function smoothScroll(targetId, duration) {
+    // Функция для плавной прокрутки
+    const smoothScroll = (targetId, duration) => {
         const targetElement = document.getElementById(targetId);
-        const startPosition = window.pageYOffset; // Начальная позиция прокрутки
-        const targetPosition = targetElement.getBoundingClientRect().top + startPosition; // Целевая позиция
-        const distance = targetPosition - startPosition; // Расстояние, которое нужно прокрутить
+        const startPosition = window.pageYOffset;
+        const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
+        const distance = targetPosition - startPosition;
         let startTime = null;
 
-        // Анимация
-        function animation(currentTime) {
+        const animation = (currentTime) => {
             if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime; // Время, прошедшее с начала анимации
-            const run = ease(timeElapsed, startPosition, distance, duration); // Рассчитать текущее значение прокрутки
-            window.scrollTo(0, run); // Прокрутка до текущей позиции
-            if (timeElapsed < duration) requestAnimationFrame(animation); // Продолжать анимацию
-        }
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        };
 
-        // Функция easing для плавной прокрутки
-        function ease(t, b, c, d) {
+        const ease = (t, b, c, d) => {
             t /= d / 2;
             if (t < 1) return c / 2 * t * t + b;
             t--;
             return -c / 2 * (t * (t - 2) - 1) + b;
-        }
+        };
 
-        requestAnimationFrame(animation); // Запуск анимации
-    }
+        requestAnimationFrame(animation);
+    };
 
     // Обработчики для плавной прокрутки
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(event) {
             event.preventDefault();
-
             const targetId = this.getAttribute('href').substring(1);
-            if (targetId) { // Проверка на существование элемента
-                smoothScroll(targetId, 100); // Вызываем функцию с целью прокрутки за 1000 мс
+            if (targetId) {
+                smoothScroll(targetId, 1000); // Исправлено на 1000 мс
             }
         });
     });
 
     // Инициализация прокрутки изображений
     const scrollContainer = document.querySelector('.scroll-content');
-    let isManualScroll = false; // Флаг для отслеживания ручной прокрутки
+    let isManualScroll = false; 
     let scrollTimeout;
 
-    // Функция для клонирования изображений и добавления их в конец контейнера
-    function cloneImages() {
+    // Функция для клонирования изображений
+    const cloneImages = () => {
         const images = Array.from(scrollContainer.children);
         images.forEach(image => {
             const clone = image.cloneNode(true);
             scrollContainer.appendChild(clone);
         });
-    }
-
-    // Инициализация клонирования изображений
+    };
     cloneImages();
 
-    // Функция прокрутки влево
-    function scrollLeft() {
+    // Функции для прокрутки влево и вправо
+    const scrollLeft = () => {
         isManualScroll = true;
-        clearTimeout(scrollTimeout); // Очищаем таймер
-        scrollContainer.scrollBy({
-            left: -300,
-            behavior: 'smooth'
-        });
-        resetScroll(); // Запуск таймера для возобновления бесконечной прокрутки
-    }
+        clearTimeout(scrollTimeout);
+        scrollContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        resetScroll();
+    };
 
-    // Функция прокрутки вправо
-    function scrollRight() {
+    const scrollRight = () => {
         isManualScroll = true;
-        clearTimeout(scrollTimeout); // Очищаем таймер
-        scrollContainer.scrollBy({
-            left: 300,
-            behavior: 'smooth'
-        });
-        resetScroll(); // Запуск таймера для возобновления бесконечной прокрутки
-    }
+        clearTimeout(scrollTimeout);
+        scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        resetScroll();
+    };
 
     // Привязка функций прокрутки к кнопкам
     document.querySelector('.scroll-left').onclick = scrollLeft;
     document.querySelector('.scroll-right').onclick = scrollRight;
 
-    // Функция для бесконечной прокрутки
-    function infiniteScroll() {
+    // Бесконечная прокрутка
+    const infiniteScroll = () => {
         if (!isManualScroll) {
             const firstImage = scrollContainer.children[0];
             const lastImage = scrollContainer.children[scrollContainer.children.length - 1];
 
-            // Если первый элемент полностью вышел за границы видимости слева
             if (scrollContainer.scrollLeft <= 0) {
                 scrollContainer.insertBefore(lastImage, firstImage);
                 scrollContainer.scrollLeft += lastImage.clientWidth;
             }
 
-            // Если последний элемент полностью вышел за границы видимости справа
             if (scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth) {
                 scrollContainer.appendChild(firstImage);
                 scrollContainer.scrollLeft -= firstImage.clientWidth;
             }
         }
         requestAnimationFrame(infiniteScroll);
-    }
+    };
 
-    function resetScroll() {
+    const resetScroll = () => {
         scrollTimeout = setTimeout(() => {
-            isManualScroll = false; // Возобновляем бесконечную прокрутку
-        }, 3000); // Через 3 секунды после ручной прокрутки
-    }
+            isManualScroll = false;
+        }, 3000); 
+    };
 
     // Запуск бесконечной прокрутки
     infiniteScroll();
